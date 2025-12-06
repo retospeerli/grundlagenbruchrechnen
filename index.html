@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Bruchrechnen – Grundlagen (5. Klasse)</title>
+  <title>Brüche erkennen – 5. Klasse</title>
   <style>
     :root {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -20,14 +20,14 @@
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
       padding: 2rem 2.5rem;
-      max-width: 900px;
+      max-width: 720px;
       width: 100%;
       box-sizing: border-box;
     }
     h1 {
       margin-top: 0;
       text-align: center;
-      font-size: 1.7rem;
+      font-size: 1.6rem;
     }
     .subtitle {
       text-align: center;
@@ -38,14 +38,14 @@
     .center {
       text-align: center;
     }
-    .menu-grid {
+    .choice-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.8rem;
+      gap: 0.6rem;
       margin: 1rem 0 0.5rem;
     }
-    .menu-btn {
-      padding: 0.9rem 0.6rem;
+    .choice-btn {
+      padding: 0.8rem 0.6rem;
       border-radius: 16px;
       border: 2px solid #d1d5db;
       background: #f9fafb;
@@ -53,29 +53,25 @@
       font-weight: 600;
       cursor: pointer;
       transition: background 0.15s ease, transform 0.05s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-      text-align: left;
     }
-    .menu-btn span.title {
-      display: block;
-      font-weight: 700;
-      margin-bottom: 0.2rem;
+    .choice-btn.selected {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #1d4ed8;
+      box-shadow: 0 5px 15px rgba(37,99,235,0.35);
     }
-    .menu-btn span.desc {
-      font-size: 0.85rem;
-      color: #4b5563;
-    }
-    .menu-btn:hover {
-      background: #e5e7eb;
-      border-color: #9ca3af;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.06);
-    }
-    .menu-btn:active {
+    .choice-btn:active {
       transform: translateY(1px);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-
+    .selected-info {
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+      min-height: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
     .primary-btn {
-      margin-top: 1rem;
+      margin-top: 0.9rem;
       width: 100%;
       padding: 0.7rem 1rem;
       font-size: 1.1rem;
@@ -94,7 +90,11 @@
       transform: translateY(1px);
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
-
+    .primary-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
     .secondary-btn {
       margin-top: 0.4rem;
       width: 100%;
@@ -116,25 +116,18 @@
       transform: translateY(1px);
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-
-    .hidden {
-      display: none;
-    }
-
-    .tag {
-      display: inline-block;
-      border-radius: 999px;
-      padding: 0.1rem 0.6rem;
-      font-size: 0.8rem;
-      background: #eff6ff;
-      color: #1d4ed8;
-      margin-top: 0.3rem;
-    }
     .progress {
       font-size: 0.9rem;
       color: #6b7280;
       margin-bottom: 0.5rem;
       text-align: center;
+    }
+    .question-text {
+      margin-top: 0.7rem;
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #111827;
     }
     .feedback {
       min-height: 1.4rem;
@@ -148,33 +141,32 @@
     .feedback.error {
       color: #b91c1c;
     }
+    .hidden {
+      display: none;
+    }
     .stats {
       margin-top: 1rem;
       font-size: 0.95rem;
       color: #374151;
     }
+    .tag {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 0.1rem 0.6rem;
+      font-size: 0.8rem;
+      background: #eff6ff;
+      color: #1d4ed8;
+      margin-top: 0.3rem;
+    }
 
-    .task-layout {
+    .shape-wrapper {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
       justify-content: center;
-      gap: 1.5rem;
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
     }
-    .model-column {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.4rem;
-    }
-    .model-label {
-      font-size: 0.9rem;
-      color: #4b5563;
-    }
-    .model-canvas {
+    #shape-canvas {
       background: #f9fafb;
-      border-radius: 16px;
+      border-radius: 12px;
       box-shadow: inset 0 0 5px rgba(0,0,0,0.08);
     }
 
@@ -202,96 +194,45 @@
       transform: translateY(1px);
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-
-    .option-btn.model-option {
-      padding: 0.4rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    .option-model-canvas {
-      background: #f9fafb;
-      border-radius: 12px;
-      box-shadow: inset 0 0 4px rgba(0,0,0,0.08);
-    }
-
-    .question-text {
-      margin-top: 0.7rem;
-      text-align: center;
-      font-size: 1.05rem;
-      font-weight: 500;
-      color: #111827;
-    }
-    .fraction-display {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      margin: 0 0.3rem;
-    }
-    .fraction-line {
-      border-top: 1px solid #111827;
-      width: 2em;
-      margin: 2px 0;
-    }
   </style>
 </head>
 <body>
 <div class="app">
-  <h1>Bruchrechnen – Grundlagen</h1>
+  <h1>Brüche erkennen</h1>
   <div class="subtitle">
-    Wähle ein Thema. Es folgen 20 Multiple-Choice-Aufgaben.<br>
-    Klicke die richtige Antwort an – sofortige Rückmeldung, kein Timer.
+    Wähle ein Modell: Rechteck oder Kreis.<br>
+    Erkenne den Anteil, der farbig markiert ist, und klicke den passenden Bruch an.
   </div>
 
-  <!-- Start-Bereich -->
+  <!-- Start -->
   <div id="start-screen">
-    <div class="menu-grid">
-      <button type="button" class="menu-btn" data-topic="fractions_visual">
-        <span class="title">1. Brüche erkennen</span>
-        <span class="desc">Bruchteile am Einheitskreis und am Rechteckmodell erkennen.</span>
-      </button>
-      <button type="button" class="menu-btn" data-topic="fractions_decimal">
-        <span class="title">2. Brüche als Dezimalzahlen</span>
-        <span class="desc">Brüche wie 1/4, 3/5, 7/10 als Dezimalzahlen erkennen.</span>
-      </button>
-      <button type="button" class="menu-btn" data-topic="fractions_simplify">
-        <span class="title">3. Brüche erkennen (kürzen)</span>
-        <span class="desc">Gleiche Brüche wie 1/3 und 3/9 am Modell und in der Schrift erkennen.</span>
-      </button>
-      <button type="button" class="menu-btn" data-topic="fractions_mixed">
-        <span class="title">4. Brüche größer als 1</span>
-        <span class="desc">Unechte Brüche in gemischte Zahlen (Ganze und Bruchteil) umwandeln.</span>
-      </button>
+    <div class="center">
+      <p><strong>Modell wählen:</strong></p>
     </div>
+    <div class="choice-grid" id="model-grid">
+      <button type="button" class="choice-btn model-btn" data-model="rectangle">Rechteckmodell</button>
+      <button type="button" class="choice-btn model-btn" data-model="circle">Kreismodell</button>
+    </div>
+    <div class="selected-info" id="selected-info"></div>
+    <button class="primary-btn" id="start-btn" disabled>Los!</button>
   </div>
 
-  <!-- Quiz-Bereich -->
+  <!-- Quiz -->
   <div id="quiz-screen" class="hidden">
-    <div class="center">
-      <div class="tag" id="topic-label"></div>
-    </div>
     <div class="progress" id="progress-text"></div>
-
-    <!-- Bereich für Modelle/Zeichnungen -->
-    <div id="model-area" class="task-layout hidden">
-      <div class="model-column">
-        <div class="model-label" id="model-label">Modell</div>
-        <canvas id="model-canvas" class="model-canvas" width="260" height="200"></canvas>
-      </div>
-      <div class="model-column hidden" id="model-second-column">
-        <div class="model-label" id="model-second-label">Zweites Modell</div>
-        <canvas id="model-second-canvas" class="model-canvas" width="260" height="200"></canvas>
-      </div>
+    <div class="center">
+      <div class="tag" id="model-label"></div>
     </div>
 
-    <!-- Frage / Erklärung -->
-    <div class="question-text" id="question-text"></div>
+    <div class="shape-wrapper">
+      <canvas id="shape-canvas" width="260" height="200"></canvas>
+    </div>
 
-    <!-- Multiple Choice -->
-    <div id="options-container" class="options-grid hidden"></div>
+    <div class="question-text">
+      Welcher Bruch ist farbig markiert?
+    </div>
+
+    <div id="options-container" class="options-grid"></div>
 
     <div class="feedback" id="feedback"></div>
     <div class="stats">
@@ -300,14 +241,14 @@
     </div>
   </div>
 
-  <!-- Ergebnis-Bereich -->
+  <!-- Ergebnis -->
   <div id="result-screen" class="hidden center">
     <h2>Fertig! 🎉</h2>
     <p id="result-summary"></p>
     <p style="margin-top:0.8rem; font-size:0.9rem; color:#4b5563;">
       Wenn du mit deinem Ergebnis zufrieden bist,<br>
       klicke auf <strong>„Fertig“</strong>, damit LearningView den Auftrag als erledigt markiert.<br>
-      Oder klicke auf <strong>„Weiter üben“</strong>, um wieder ein Thema auszuwählen.
+      Oder klicke auf <strong>„Weiter üben“</strong>, um noch einmal zu starten.
     </p>
     <button class="primary-btn" id="finish-btn">Fertig</button>
     <button class="secondary-btn" id="restart-btn">Weiter üben</button>
@@ -316,55 +257,71 @@
 
 <script>
   const TOTAL_QUESTIONS = 20;
+  const DENOMINATOR_MIN = 2;
+  const DENOMINATOR_MAX = 10;
 
-  const TOPIC_LABELS = {
-    fractions_visual: '1. Brüche erkennen (Modelle)',
-    fractions_decimal: '2. Brüche als Dezimalzahlen',
-    fractions_simplify: '3. Brüche erkennen (kürzen)',
-    fractions_mixed: '4. Brüche größer als 1'
-  };
-
-  let currentTopic = null;
+  let selectedModel = null; // 'rectangle' | 'circle'
   let questionIndex = 0;
   let correctAnswers = 0;
   let wrongAnswers = 0;
-  let currentQuestion = null;
+  let usedFractions = []; // Schlüssel "n/d" zum Doppel vermeiden
 
-  // DOM-Referenzen
+  let currentQuestion = null; // {numerator, denominator, correctString, options}
+
+  // DOM
   const startScreen = document.getElementById('start-screen');
   const quizScreen = document.getElementById('quiz-screen');
   const resultScreen = document.getElementById('result-screen');
 
-  const topicLabel = document.getElementById('topic-label');
+  const modelGrid = document.getElementById('model-grid');
+  const modelButtons = modelGrid.querySelectorAll('.model-btn');
+  const selectedInfo = document.getElementById('selected-info');
+  const startBtn = document.getElementById('start-btn');
+
   const progressText = document.getElementById('progress-text');
+  const modelLabel = document.getElementById('model-label');
+  const optionsContainer = document.getElementById('options-container');
   const feedback = document.getElementById('feedback');
   const statCorrect = document.getElementById('stat-correct');
   const statWrong = document.getElementById('stat-wrong');
   const statTotal = document.getElementById('stat-total');
 
-  const modelArea = document.getElementById('model-area');
-  const modelLabel = document.getElementById('model-label');
-  const modelCanvas = document.getElementById('model-canvas');
-  const modelCtx = modelCanvas.getContext('2d');
-
-  const modelSecondColumn = document.getElementById('model-second-column');
-  const modelSecondLabel = document.getElementById('model-second-label');
-  const modelSecondCanvas = document.getElementById('model-second-canvas');
-  const modelSecondCtx = modelSecondCanvas.getContext('2d');
-
-  const questionText = document.getElementById('question-text');
-  const optionsContainer = document.getElementById('options-container');
-
+  const resultSummary = document.getElementById('result-summary');
   const finishBtn = document.getElementById('finish-btn');
   const restartBtn = document.getElementById('restart-btn');
-  const resultSummary = document.getElementById('result-summary');
 
-  // Menü-Buttons
-  document.querySelectorAll('.menu-btn').forEach(btn => {
+  const shapeCanvas = document.getElementById('shape-canvas');
+  const shapeCtx = shapeCanvas.getContext('2d');
+
+  // Modell-Auswahl
+  modelButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      const topic = btn.getAttribute('data-topic');
-      startTopic(topic);
+      const model = btn.getAttribute('data-model');
+      selectedModel = (selectedModel === model) ? null : model;
+      modelButtons.forEach(b => {
+        b.classList.toggle('selected', b.getAttribute('data-model') === selectedModel);
+      });
+      updateStartControls();
     });
+  });
+
+  function updateStartControls() {
+    if (!selectedModel) {
+      selectedInfo.textContent = 'Bitte ein Modell auswählen.';
+      startBtn.disabled = true;
+      return;
+    }
+    selectedInfo.textContent = 'Ausgewählt: ' +
+      (selectedModel === 'rectangle' ? 'Rechteckmodell' : 'Kreismodell');
+    startBtn.disabled = false;
+  }
+
+  startBtn.addEventListener('click', startTraining);
+
+  restartBtn.addEventListener('click', () => {
+    quizScreen.classList.add('hidden');
+    resultScreen.classList.add('hidden');
+    startScreen.classList.remove('hidden');
   });
 
   finishBtn.addEventListener('click', () => {
@@ -377,17 +334,13 @@
     }
   });
 
-  restartBtn.addEventListener('click', () => {
-    quizScreen.classList.add('hidden');
-    resultScreen.classList.add('hidden');
-    startScreen.classList.remove('hidden');
-  });
+  function startTraining() {
+    if (!selectedModel) return;
 
-  function startTopic(topic) {
-    currentTopic = topic;
     questionIndex = 0;
     correctAnswers = 0;
     wrongAnswers = 0;
+    usedFractions = [];
 
     statCorrect.textContent = '0';
     statWrong.textContent = '0';
@@ -395,7 +348,8 @@
     feedback.textContent = '';
     feedback.className = 'feedback';
 
-    topicLabel.textContent = TOPIC_LABELS[topic];
+    modelLabel.textContent =
+      selectedModel === 'rectangle' ? 'Rechteckmodell' : 'Kreismodell';
 
     startScreen.classList.add('hidden');
     resultScreen.classList.add('hidden');
@@ -408,414 +362,210 @@
     feedback.textContent = '';
     feedback.className = 'feedback';
 
-    modelArea.classList.add('hidden');
-    modelSecondColumn.classList.add('hidden');
-    optionsContainer.classList.add('hidden');
-    questionText.textContent = '';
-
+    currentQuestion = generateFractionQuestion();
     progressText.textContent =
       `Aufgabe ${questionIndex + 1} von ${TOTAL_QUESTIONS}`;
 
-    switch (currentTopic) {
-      case 'fractions_visual':
-        currentQuestion = generateFractionsVisual();
-        showFractionsVisual(currentQuestion);
-        break;
-      case 'fractions_decimal':
-        currentQuestion = generateFractionsDecimal();
-        showFractionsDecimal(currentQuestion);
-        break;
-      case 'fractions_simplify':
-        currentQuestion = generateFractionsSimplify();
-        showFractionsSimplify(currentQuestion);
-        break;
-      case 'fractions_mixed':
-        currentQuestion = generateFractionsMixed();
-        showFractionsMixed(currentQuestion);
-        break;
-    }
+    // Figur zeichnen
+    drawShape(currentQuestion.numerator, currentQuestion.denominator);
+
+    // MC-Optionen anzeigen
+    renderOptions(currentQuestion.options);
   }
 
-  // ---------- 1. Brüche erkennen (Modelle) ----------
-  // Frage: Modell (Kreis oder Rechteck)
-  // Antworten: Bruchschreibweise (Text)
-
-  function generateFractionsVisual() {
-    const denominators = [2,3,4,5,6,8,10,12];
-    const d = denominators[randomInt(0, denominators.length - 1)];
-    const n = randomInt(1, d - 1);
-
-    const useCircle = Math.random() < 0.5;
-
-    const correctText = `${n}/${d}`;
-
-    const options = [correctText];
-    while (options.length < 4) {
-      const d2 = denominators[randomInt(0, denominators.length - 1)];
-      const n2 = randomInt(1, d2 - 1);
-      const fracText = `${n2}/${d2}`;
-      if (!options.includes(fracText)) {
-        options.push(fracText);
-      }
-    }
-    shuffleArray(options);
-
-    return { type: 'fractions_visual', n, d, useCircle, correctText, options };
-  }
-
-  function showFractionsVisual(q) {
-    modelArea.classList.remove('hidden');
-    modelSecondColumn.classList.add('hidden');
-    modelLabel.textContent = q.useCircle ? 'Einheitskreis' : 'Rechteckmodell';
-
-    clearCanvas(modelCtx, modelCanvas);
-    if (q.useCircle) {
-      drawFractionCircle(modelCtx, modelCanvas.width, modelCanvas.height, q.n, q.d);
-    } else {
-      drawFractionRect(modelCtx, modelCanvas.width, modelCanvas.height, q.n, q.d);
-    }
-
-    questionText.textContent = 'Welcher Bruch ist farbig markiert?';
-    optionsContainer.classList.remove('hidden');
-
-    renderMCOptionsText(q.options, selected => {
-      const correct = (selected === q.correctText);
-      handleResult(
-        correct,
-        correct
-          ? 'Richtig! 👍'
-          : `Leider falsch. Richtig ist: ${q.correctText}.`
-      );
-    });
-  }
-
-  // ---------- 2. Brüche als Dezimalzahlen ----------
-  // Frage: Bruch in Bruchschreibweise
-  // Antworten: Dezimalzahlen (Text)
-
-  const decimalFractions = [
-    { n: 1, d: 2, dec: 0.5 },
-    { n: 1, d: 4, dec: 0.25 },
-    { n: 3, d: 4, dec: 0.75 },
-    { n: 1, d: 5, dec: 0.2 },
-    { n: 2, d: 5, dec: 0.4 },
-    { n: 3, d: 5, dec: 0.6 },
-    { n: 4, d: 5, dec: 0.8 },
-    { n: 1, d: 10, dec: 0.1 },
-    { n: 3, d: 10, dec: 0.3 },
-    { n: 7, d: 10, dec: 0.7 },
-    { n: 9, d: 10, dec: 0.9 },
-    { n: 1, d: 20, dec: 0.05 },
-    { n: 3, d: 20, dec: 0.15 },
-    { n: 1, d: 25, dec: 0.04 },
-    { n: 1, d: 50, dec: 0.02 },
-    { n: 1, d: 100, dec: 0.01 }
-  ];
-
-  function generateFractionsDecimal() {
-    const item = decimalFractions[randomInt(0, decimalFractions.length - 1)];
-    const fracText = `${item.n}/${item.d}`;
-    const correctText = decimalToString(item.dec);
-
-    const options = [correctText];
-    while (options.length < 4) {
-      const other = decimalFractions[randomInt(0, decimalFractions.length - 1)];
-      const txt = decimalToString(other.dec);
-      if (!options.includes(txt)) {
-        options.push(txt);
-      }
-    }
-    shuffleArray(options);
-
-    return {
-      type: 'fractions_decimal',
-      n: item.n,
-      d: item.d,
-      correctText,
-      options
-    };
-  }
-
-  function showFractionsDecimal(q) {
-    modelArea.classList.add('hidden');
-    optionsContainer.classList.remove('hidden');
-
-    questionText.innerHTML =
-      `Welcher Dezimalbruch passt zu dem Bruch ` +
-      `<span class="fraction-display"><span>${q.n}</span><span class="fraction-line"></span><span>${q.d}</span></span>?`;
-
-    renderMCOptionsText(q.options, selected => {
-      const correct = (selected === q.correctText);
-      handleResult(
-        correct,
-        correct
-          ? 'Richtig! 👍'
-          : `Leider falsch. Richtig ist: ${q.correctText}.`
-      );
-    });
-  }
-
-  // ---------- 3. Brüche erkennen (kürzen) ----------
-  // Frage: Bruch + Modell
-  // Antworten: gekürzte Brüche (Text)
-
-  function generateFractionsSimplify() {
-    const denominators = [2,3,4,5,6,8,9,10,12];
-    let d = denominators[randomInt(0, denominators.length - 1)];
-    let n = randomInt(1, d - 1);
-
-    let g = gcd(n, d);
+  function generateFractionQuestion() {
+    let d, n;
     let tries = 0;
-    while (g === 1 && tries < 50) {
-      d = denominators[randomInt(0, denominators.length - 1)];
+
+    // Bruch mit gcd(n,d)=1, um "schöne" Grundbrüche zu haben
+    do {
+      d = randomInt(DENOMINATOR_MIN, DENOMINATOR_MAX);
       n = randomInt(1, d - 1);
-      g = gcd(n, d);
       tries++;
-    }
+      if (tries > 200) break;
+    } while (gcd(n, d) !== 1 || usedFractions.includes(`${n}/${d}`));
 
-    const nReduced = n / g;
-    const dReduced = d / g;
+    usedFractions.push(`${n}/${d}`);
 
-    const correctText = `${nReduced}/${dReduced}`;
+    const correctString = `${n}/${d}`;
+    const options = generateFractionOptions(n, d, 4);
 
-    const options = [correctText];
-    while (options.length < 4) {
-      let n2 = nReduced + randomInt(-2, 2);
-      let d2 = dReduced + randomInt(-2, 2);
-      if (n2 <= 0 || d2 <= 0) continue;
-      const g2 = gcd(n2, d2);
-      n2 = Math.floor(n2 / g2);
-      d2 = Math.floor(d2 / g2);
-      const text = `${n2}/${d2}`;
-      if (text !== correctText && !options.includes(text)) {
-        options.push(text);
+    return { numerator: n, denominator: d, correctString, options };
+  }
+
+  function generateFractionOptions(n, d, count) {
+    const options = [`${n}/${d}`];
+
+    while (options.length < count) {
+      let dn = d;
+      let nn;
+
+      // manchmal selben Nenner, manchmal anderen
+      if (Math.random() < 0.7) {
+        dn = d;
+        nn = randomInt(1, dn - 1);
+      } else {
+        dn = randomInt(DENOMINATOR_MIN, DENOMINATOR_MAX);
+        nn = randomInt(1, dn - 1);
       }
+
+      if (gcd(nn, dn) !== 1) continue;
+
+      const frac = `${nn}/${dn}`;
+      if (frac === `${n}/${d}`) continue;
+      if (options.includes(frac)) continue;
+
+      options.push(frac);
     }
-    shuffleArray(options);
 
-    return {
-      type: 'fractions_simplify',
-      n,
-      d,
-      nReduced,
-      dReduced,
-      correctText,
-      options
-    };
-  }
-
-  function showFractionsSimplify(q) {
-    modelArea.classList.remove('hidden');
-    modelSecondColumn.classList.add('hidden');
-
-    modelLabel.textContent = `Bruch: ${q.n}/${q.d}`;
-    clearCanvas(modelCtx, modelCanvas);
-    drawFractionRect(modelCtx, modelCanvas.width, modelCanvas.height, q.n, q.d);
-
-    questionText.innerHTML =
-      `Welcher gekürzte Bruch ist gleich wie ` +
-      `<span class="fraction-display"><span>${q.n}</span><span class="fraction-line"></span><span>${q.d}</span></span>?`;
-
-    optionsContainer.classList.remove('hidden');
-    renderMCOptionsText(q.options, selected => {
-      const correct = (selected === q.correctText);
-      handleResult(
-        correct,
-        correct
-          ? 'Richtig! 👍'
-          : `Leider falsch. Richtig ist: ${q.correctText}.`
-      );
-    });
-  }
-
-  // ---------- 4. Brüche größer als 1 – gemischte Zahl ----------
-  // Frage: unechter Bruch
-  // Antworten: gemischte Zahlen als Text (z.B. "2 1/3")
-
-  function generateFractionsMixed() {
-    const denominators = [2,3,4,5,6,8,10,12];
-    const whole = randomInt(1, 5);
-    let d = denominators[randomInt(0, denominators.length - 1)];
-    let r = randomInt(1, d - 1);
-
-    const g = gcd(r, d);
-    r = r / g;
-    d = d / g;
-
-    const improperNum = whole * d + r;
-    const improperDen = d;
-
-    const correctText = `${whole} ${r}/${d}`;
-
-    const options = [correctText];
-    while (options.length < 4) {
-      let w2 = whole + randomInt(-1, 2);
-      if (w2 < 1) w2 = 1;
-      let r2 = r + randomInt(-2, 2);
-      if (r2 <= 0) r2 = 1;
-      if (r2 >= d) r2 = d - 1;
-      const text = `${w2} ${r2}/${d}`;
-      if (!options.includes(text)) {
-        options.push(text);
-      }
+    // mischen
+    for (let i = options.length - 1; i > 0; i--) {
+      const j = randomInt(0, i);
+      [options[i], options[j]] = [options[j], options[i]];
     }
-    shuffleArray(options);
-
-    return {
-      type: 'fractions_mixed',
-      improperNum,
-      improperDen,
-      whole,
-      r,
-      d,
-      correctText,
-      options
-    };
+    return options;
   }
 
-  function showFractionsMixed(q) {
-    modelArea.classList.add('hidden');
-    optionsContainer.classList.remove('hidden');
-
-    questionText.innerHTML =
-      `Wandle den Bruch ` +
-      `<span class="fraction-display"><span>${q.improperNum}</span><span class="fraction-line"></span><span>${q.improperDen}</span></span>` +
-      ` in eine gemischte Zahl um.`;
-
-    renderMCOptionsText(q.options, selected => {
-      const correct = (selected === q.correctText);
-      handleResult(
-        correct,
-        correct
-          ? 'Richtig! 👍'
-          : `Leider falsch. Richtig ist: ${q.correctText}.`
-      );
-    });
-  }
-
-  // ---------- Multiple Choice Rendering ----------
-
-  function renderMCOptionsText(options, onSelect) {
+  function renderOptions(options) {
     optionsContainer.innerHTML = '';
-    optionsContainer.classList.remove('hidden');
-
     options.forEach(text => {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'option-btn';
       btn.textContent = text;
-      btn.addEventListener('click', () => onSelect(text));
+      btn.addEventListener('click', () => handleAnswer(text));
       optionsContainer.appendChild(btn);
     });
   }
 
-  // (Optional: hier könnte man später Modell-Antworten mit kleinen Canvas-Elementen einbauen)
+  function handleAnswer(selected) {
+    const isCorrect = (selected === currentQuestion.correctString);
 
-  // ---------- Ergebnis/Weiterschalten ----------
-
-  function handleResult(isCorrect, message) {
     if (isCorrect) {
       correctAnswers++;
       statCorrect.textContent = correctAnswers.toString();
-      feedback.textContent = message;
+      feedback.textContent = 'Richtig! 👍';
       feedback.className = 'feedback ok';
     } else {
       wrongAnswers++;
       statWrong.textContent = wrongAnswers.toString();
-      feedback.textContent = message;
+      feedback.textContent =
+        'Leider falsch. Richtig ist: ' + currentQuestion.correctString;
       feedback.className = 'feedback error';
     }
 
     questionIndex++;
     if (questionIndex >= TOTAL_QUESTIONS) {
-      setTimeout(endTopic, 900);
+      setTimeout(endTraining, 800);
     } else {
-      setTimeout(newQuestion, 900);
+      setTimeout(newQuestion, 800);
     }
   }
 
-  function endTopic() {
+  function endTraining() {
     quizScreen.classList.add('hidden');
     resultScreen.classList.remove('hidden');
 
     const quote = (correctAnswers / TOTAL_QUESTIONS * 100).toFixed(0);
+    const modelText =
+      selectedModel === 'rectangle' ? 'Rechteckmodell' : 'Kreismodell';
+
     resultSummary.innerHTML =
-      `Du hast <strong>${TOTAL_QUESTIONS}</strong> Aufgaben im Bereich <strong>${TOPIC_LABELS[currentTopic]}</strong> gelöst.<br>` +
+      `Du hast <strong>${TOTAL_QUESTIONS}</strong> Aufgaben im <strong>${modelText}</strong> gelöst.<br>` +
       `Davon waren <strong>${correctAnswers}</strong> richtig ` +
       `(<strong>${quote}%</strong>).<br>` +
       `Du hattest insgesamt <strong>${wrongAnswers}</strong> falsche Versuche.`;
   }
 
-  // ---------- Zeichnen der Modelle ----------
+  // --- Zeichnen des Modells ---
 
-  function clearCanvas(ctx, canvas) {
-    ctx.clearRect(0, 0, canvas.width || canvas.width === 0 ? canvas.width : 0, canvas.height || canvas.height === 0 ? canvas.height : 0);
+  function drawShape(numerator, denominator) {
+    const ctx = shapeCtx;
+    const w = shapeCanvas.width;
+    const h = shapeCanvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    if (selectedModel === 'rectangle') {
+      drawRectangleModel(ctx, w, h, numerator, denominator);
+    } else {
+      drawCircleModel(ctx, w, h, numerator, denominator);
+    }
   }
 
-  function drawFractionCircle(ctx, width, height, n, d) {
-    ctx.clearRect(0, 0, width, height);
-    const radius = Math.min(width, height) / 2 - 10;
-    const cx = width / 2;
-    const cy = height / 2;
+  function drawRectangleModel(ctx, w, h, numerator, denominator) {
+    const barWidth = w - 40;
+    const barHeight = 80;
+    const x0 = (w - barWidth) / 2;
+    const y0 = (h - barHeight) / 2;
 
+    const partWidth = barWidth / denominator;
+
+    // Hintergrund
     ctx.save();
-    ctx.translate(cx, cy);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#111827';
 
-    const fullAngle = Math.PI * 2;
+    // Umrandung
+    ctx.strokeRect(x0, y0, barWidth, barHeight);
 
-    for (let i = 0; i < d; i++) {
-      const startAngle = fullAngle * (i / d) - Math.PI / 2;
-      const endAngle = fullAngle * ((i + 1) / d) - Math.PI / 2;
+    // vertikale Linien
+    for (let i = 1; i < denominator; i++) {
+      const x = x0 + i * partWidth;
       ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.arc(0, 0, radius, startAngle, endAngle);
-      ctx.closePath();
-      ctx.fillStyle = (i < n) ? '#fde68a' : '#e5e7eb';
-      ctx.fill();
-      ctx.strokeStyle = '#9ca3af';
-      ctx.lineWidth = 1;
+      ctx.moveTo(x, y0);
+      ctx.lineTo(x, y0 + barHeight);
       ctx.stroke();
     }
 
-    ctx.beginPath();
-    ctx.arc(0, 0, radius, 0, fullAngle);
-    ctx.strokeStyle = '#111827';
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    // farbige Teile (links beginnend)
+    ctx.fillStyle = '#3b82f6';
+    for (let i = 0; i < numerator; i++) {
+      const x = x0 + i * partWidth;
+      ctx.fillRect(x + 1, y0 + 1, partWidth - 2, barHeight - 2);
+    }
 
     ctx.restore();
   }
 
-  function drawFractionRect(ctx, width, height, n, d) {
-    ctx.clearRect(0, 0, width, height);
-    const padding = 20;
-    const w = width - 2 * padding;
-    const h = height - 2 * padding;
+  function drawCircleModel(ctx, w, h, numerator, denominator) {
+    const radius = Math.min(w, h) / 2 - 20;
+    const cx = w / 2;
+    const cy = h / 2;
 
-    const x0 = padding;
-    const y0 = padding;
+    ctx.save();
+    ctx.translate(cx, cy);
 
-    const partWidth = w / d;
+    // Segmente
+    const fullAngle = Math.PI * 2;
+    const partAngle = fullAngle / denominator;
 
-    for (let i = 0; i < d; i++) {
-      const x = x0 + i * partWidth;
+    for (let i = 0; i < denominator; i++) {
+      const start = -Math.PI / 2 + i * partAngle;
+      const end = start + partAngle;
+
       ctx.beginPath();
-      ctx.rect(x, y0, partWidth, h);
-      ctx.fillStyle = (i < n) ? '#bfdbfe' : '#e5e7eb';
-      ctx.fill();
-      ctx.strokeStyle = '#9ca3af';
-      ctx.lineWidth = 1;
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, radius, start, end);
+      ctx.closePath();
+
+      if (i < numerator) {
+        ctx.fillStyle = '#3b82f6';
+        ctx.fill();
+      } else {
+        ctx.fillStyle = '#e5e7eb';
+        ctx.fill();
+      }
+
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#111827';
       ctx.stroke();
     }
 
-    ctx.beginPath();
-    ctx.rect(x0, y0, w, h);
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = '#111827';
-    ctx.stroke();
+    ctx.restore();
   }
 
-  // ---------- Hilfsfunktionen ----------
+  // --- Hilfsfunktionen ---
 
   function gcd(a, b) {
     a = Math.abs(a);
@@ -825,32 +575,17 @@
       b = a % b;
       a = t;
     }
-    return a || 1;
+    return a;
   }
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = randomInt(0, i);
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-  }
-
-  function decimalToString(x) {
-    let str = x.toString();
-    if (!str.includes('.')) return str + '.0';
-    const parts = str.split('.');
-    if (parts[1].length > 3) {
-      str = x.toFixed(3);
-    }
-    return str.replace(/0+$/,'').replace(/\.$/,'.0');
-  }
-
+  // Initial
   (function init() {
     statTotal.textContent = TOTAL_QUESTIONS.toString();
+    updateStartControls();
   })();
 </script>
 </body>
